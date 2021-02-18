@@ -146,243 +146,191 @@ function clearQRCode() {
 }
 
 async function createPDF() {
-	//QR
 	var myImgSrc = document.getElementById("qrcode").getElementsByTagName("img")[0].src;
 
-	// Fetch the PDF with form fields
-	var formUrl = null
-	if(document.documentElement.lang == 'en'){
-		formUrl = './form_eng_Mar01_2021.pdf'
-	}
-	else if(document.documentElement.lang == 'fr'){
-		formUrl = './form_fra_Mar01_2021.pdf'
+	var formUrl = null;
+	if (document.documentElement.lang == 'en') {
+		formUrl = './pdf/form-eng.pdf';
+	} else if (document.documentElement.lang == 'fr') {
+		formUrl = './pdf/form-fra.pdf';
 	}
 	
-	const arrayBuffer = await fetch(formUrl).then(res => res.arrayBuffer())
-	
-	
+	const arrayBuffer = await fetch(formUrl).then(res => res.arrayBuffer());
+	const pdfDoc = await PDFDocument.load(arrayBuffer);
+	const qrImage = await pdfDoc.embedPng(myImgSrc);
+	const form = pdfDoc.getForm();
+	const qrImageField = form.getButton('qrImage');
 
-	// Load a PDF with form fields
-	const pdfDoc = await PDFDocument.load(arrayBuffer)
-	
-	const qrImage = await pdfDoc.embedPng(myImgSrc)
-	
-	// Get the form containing all the fields
-	const form = pdfDoc.getForm()
+    qrImageField.setImage(qrImage);
 
-	const qrImageField = form.getButton('qrImage')
-	qrImageField.setImage(qrImage)
-	
-	
-	
-	
-	// Get all fields in the PDF by their names
-	const AppCourtField = form.getTextField('ApplicationCourt')
-	AppCourtField.setMaxLength(4)
-	const AppRegistryField = form.getTextField('ApplicationRegistry')
-	AppRegistryField.setMaxLength(6)
-	const TransferredCourtField = form.getTextField('TransferredCourt')
-	TransferredCourtField.setMaxLength(4)
-	const TransferredRegistryField = form.getTextField('TransferredRegistry')
-	TransferredRegistryField.setMaxLength(6)
+    // court use fields
+    const AppCourtField = form.getTextField('ApplicationCourt');
+	AppCourtField.setMaxLength(4);
+	const AppRegistryField = form.getTextField('ApplicationRegistry');
+	AppRegistryField.setMaxLength(6);
+	const TransferredCourtField = form.getTextField('TransferredCourt');
+	TransferredCourtField.setMaxLength(4);
+	const TransferredRegistryField = form.getTextField('TransferredRegistry');
+	TransferredRegistryField.setMaxLength(6);
+	const PrescribedFeesFields = form.getRadioGroup('PrescribedFees');
 
-	//Radio group 1
-	const PrescribedFeesFields = form.getRadioGroup('PrescribedFees')
-	//PrescribedFeesFields.select('InvoicedQuarterly')
-	const ProvinceField = form.getTextField('Province')
-	ProvinceField.setMaxLength(30)
+    // divorce fields
+    const ProvinceField = form.getTextField('Province');
+	ProvinceField.setMaxLength(30);
+	const DateFiledYearField = form.getTextField('DateFiledYear');
+	DateFiledYearField.setMaxLength(30);
+	const DateFiledMonthField = form.getTextField('DateFiledMonth');
+	DateFiledMonthField.setMaxLength(30);
+	const DateFiledDayField = form.getTextField('DateFiledDay');
+	DateFiledDayField.setMaxLength(30);
+	const DateMarriageYearField = form.getTextField('DateMarriageYear');
+	DateMarriageYearField.setMaxLength(30);
+	const DateMarriageMonthField = form.getTextField('DateMarriageMonth');
+	DateMarriageMonthField.setMaxLength(30);
+	const DateMarriageDayField = form.getTextField('DateMarriageDay');
+	DateMarriageDayField.setMaxLength(30);
 
-	const DateFiledYearField = form.getTextField('DateFiledYear')
-	DateFiledYearField.setMaxLength(30)
-	const DateFiledMonthField = form.getTextField('DateFiledMonth')
-	DateFiledMonthField.setMaxLength(30)
-	const DateFiledDayField = form.getTextField('DateFiledDay')
-	DateFiledDayField.setMaxLength(30)
+    // applicant 1 fields
+	const ApplicantChoiceFields = form.getRadioGroup('ApplicantChoice');
+	const ApplicantGenderFields = form.getRadioGroup('ApplicantGender');
+	const ApplicantSurnameField = form.getTextField('ApplicantSurname');
+	ApplicantSurnameField.setMaxLength(30);
+	const ApplicantGivenNameField = form.getTextField('ApplicantGivenName');
+	ApplicantGivenNameField.setMaxLength(30);
+	const ApplicantDateOfBirthYearField = form.getTextField('ApplicantDateOfBirthYear');
+	ApplicantDateOfBirthYearField.setMaxLength(30);
+	const ApplicantDateOfBirthMonthField = form.getTextField('ApplicantDateOfBirthMonth');
+	ApplicantDateOfBirthMonthField.setMaxLength(30);
+	const ApplicantDateOfBirthDayField = form.getTextField('ApplicantDateOfBirthDay');
+	ApplicantDateOfBirthDayField.setMaxLength(30);
 
-	const DateMarriageYearField = form.getTextField('DateMarriageYear')
-	DateMarriageYearField.setMaxLength(30)
-	const DateMarriageMonthField = form.getTextField('DateMarriageMonth')
-	DateMarriageMonthField.setMaxLength(30)
-	const DateMarriageDayField = form.getTextField('DateMarriageDay')
-	DateMarriageDayField.setMaxLength(30)
+    // applicant 2 fields
+    const RespondentChoiceFields = form.getRadioGroup('RespondentChoice');
+	const RespondentGenderFields = form.getRadioGroup('RespondentGender');
+	const RespondentSurnameField = form.getTextField('RespondentSurname');
+	RespondentSurnameField.setMaxLength(30);
+	const RespondentGivenNameField = form.getTextField('RespondentGivenName');
+	RespondentGivenNameField.setMaxLength(30);
+	const RespondentDateOfBirthYearField = form.getTextField('RespondentDateOfBirthYear');
+	RespondentDateOfBirthYearField.setMaxLength(30);
+	const RespondentDateOfBirthMonthField = form.getTextField('RespondentDateOfBirthMonth');
+	RespondentDateOfBirthMonthField.setMaxLength(30);
+	const RespondentDateOfBirthDayField = form.getTextField('RespondentDateOfBirthDay');
+	RespondentDateOfBirthDayField.setMaxLength(30);
 
-	//Radio group 2
-	const ApplicantChoiceFields = form.getRadioGroup('ApplicantChoice')
+	// official fields
+	const DateSignedField = form.getTextField('DateSigned');
+	DateSignedField.setMaxLength(30);
 
-	//Radio group 3
-	const ApplicantGenderFields = form.getRadioGroup('ApplicantGender')
-
-	//Applicant Text Fields
-	const ApplicantSurnameField = form.getTextField('ApplicantSurname')
-	ApplicantSurnameField.setMaxLength(30)
-	const ApplicantGivenNameField = form.getTextField('ApplicantGivenName')
-	ApplicantGivenNameField.setMaxLength(30)
-	const ApplicantDateOfBirthYearField = form.getTextField('ApplicantDateOfBirthYear')
-	ApplicantDateOfBirthYearField.setMaxLength(30)
-	const ApplicantDateOfBirthMonthField = form.getTextField('ApplicantDateOfBirthMonth')
-	ApplicantDateOfBirthMonthField.setMaxLength(30)
-	const ApplicantDateOfBirthDayField = form.getTextField('ApplicantDateOfBirthDay')
-	ApplicantDateOfBirthDayField.setMaxLength(30)
-
-	//Radio group 4
-	const RespondentChoiceFields = form.getRadioGroup('RespondentChoice')
-
-	//Radio group 5
-	const RespondentGenderFields = form.getRadioGroup('RespondentGender')
-
-	//Respondent Text Fields
-	const RespondentSurnameField = form.getTextField('RespondentSurname')
-	RespondentSurnameField.setMaxLength(30)
-	const RespondentGivenNameField = form.getTextField('RespondentGivenName')
-	RespondentGivenNameField.setMaxLength(30)
-	const RespondentDateOfBirthYearField = form.getTextField('RespondentDateOfBirthYear')
-	RespondentDateOfBirthYearField.setMaxLength(30)
-	const RespondentDateOfBirthMonthField = form.getTextField('RespondentDateOfBirthMonth')
-	RespondentDateOfBirthMonthField.setMaxLength(30)
-	const RespondentDateOfBirthDayField = form.getTextField('RespondentDateOfBirthDay')
-	RespondentDateOfBirthDayField.setMaxLength(30)
-
-	//Date Signed
-	const DateSignedField = form.getTextField('DateSigned')
-	DateSignedField.setMaxLength(30)
-
-	///////////////////
-	///////////////////
-	///////////////////
-	
-	// Set all fields in the PDF by their names
-	AppCourtField.setText(document.getElementById('CourtNoTo').value)
-	AppRegistryField.setText(document.getElementById('RegistryNoTo').value)
-	TransferredCourtField.setText(document.getElementById('CourtNoFrom').value)
-	TransferredRegistryField.setText(document.getElementById('RegistryNoFrom').value)
-
-	//Radio group 1
-	var selectedPrescribedFeeButton = new String()
+    // populate fields in PDF form
+	AppCourtField.setText(document.getElementById('CourtNoTo').value);
+	AppRegistryField.setText(document.getElementById('RegistryNoTo').value);
+	TransferredCourtField.setText(document.getElementById('CourtNoFrom').value);
+	TransferredRegistryField.setText(document.getElementById('RegistryNoFrom').value);
+	var selectedPrescribedFeeButton = new String();
 	if (document.getElementById('FeeQuarterly').checked === true) {
-		selectedPrescribedFeeButton = 'InvoicedQuarterly'
+		selectedPrescribedFeeButton = 'InvoicedQuarterly';
 		form.getRadioGroup('PrescribedFees').select(selectedPrescribedFeeButton);
 	}
 	if (document.getElementById('FeeExempt').checked === true) {
-		selectedPrescribedFeeButton = 'Exempt'
+		selectedPrescribedFeeButton = 'Exempt';
 		form.getRadioGroup('PrescribedFees').select(selectedPrescribedFeeButton);
 	}
 	if (document.getElementById('FeeTransferred').checked === true) {
-		selectedPrescribedFeeButton = 'ExemptTransferred'
+		selectedPrescribedFeeButton = 'ExemptTransferred';
 		form.getRadioGroup('PrescribedFees').select(selectedPrescribedFeeButton);
 	}
-
-	ProvinceField.setText(document.getElementById('Province').value)
-
+	ProvinceField.setText(document.getElementById('Province').value);
 	if (DateFiled != "") {
-		var dateFiledArray = document.getElementById('DateFiled').value.split("-")
-		DateFiledYearField.setText(dateFiledArray[0])
-		DateFiledMonthField.setText(dateFiledArray[1])
-		DateFiledDayField.setText(dateFiledArray[2])
+		var dateFiledArray = document.getElementById('DateFiled').value.split("-");
+		DateFiledYearField.setText(dateFiledArray[0]);
+		DateFiledMonthField.setText(dateFiledArray[1]);
+		DateFiledDayField.setText(dateFiledArray[2]);
 	}
-
 	if (DateMarriage != "") {
-		var dateOfMarraigeArray = document.getElementById('DateMarriage').value.split("-")
-		DateMarriageYearField.setText(dateOfMarraigeArray[0])
-		DateMarriageMonthField.setText(dateOfMarraigeArray[1])
-		DateMarriageDayField.setText(dateOfMarraigeArray[2])
+		var dateOfMarraigeArray = document.getElementById('DateMarriage').value.split("-");
+		DateMarriageYearField.setText(dateOfMarraigeArray[0]);
+		DateMarriageMonthField.setText(dateOfMarraigeArray[1]);
+		DateMarriageDayField.setText(dateOfMarraigeArray[2]);
 	}
-	
-	//Radio group 2
-	var selectedApplicantChoiceButton = new String()
+	var selectedApplicantChoiceButton = new String();
 	if (document.getElementById('Applicant1').checked === true) {
-		selectedApplicantChoiceButton = 'Applicant'
-		ApplicantChoiceFields.select(selectedApplicantChoiceButton)
+		selectedApplicantChoiceButton = 'Applicant';
+		ApplicantChoiceFields.select(selectedApplicantChoiceButton);
 	}
 	if (document.getElementById('JointApplicant1').checked === true) {
-		selectedApplicantChoiceButton = 'ApplicantJointApplicant'
-		ApplicantChoiceFields.select(selectedApplicantChoiceButton)
+		selectedApplicantChoiceButton = 'ApplicantJointApplicant';
+		ApplicantChoiceFields.select(selectedApplicantChoiceButton);
 	}
-
-	//Radio group 3
-	var selectedApplicantGenderButton = new String()
+	var selectedApplicantGenderButton = new String();
 	if (document.getElementById('Applicant1Male').checked === true) {
-		selectedApplicantGenderButton = 'ApplicantMale'
-		ApplicantGenderFields.select(selectedApplicantGenderButton)
+		selectedApplicantGenderButton = 'ApplicantMale';
+		ApplicantGenderFields.select(selectedApplicantGenderButton);
 	}
 	if (document.getElementById('Applicant1Female').checked === true) {
-		selectedApplicantGenderButton = 'ApplicantFemale'
-		ApplicantGenderFields.select(selectedApplicantGenderButton)
+		selectedApplicantGenderButton = 'ApplicantFemale';
+		ApplicantGenderFields.select(selectedApplicantGenderButton);
 	}
 	if (document.getElementById('Applicant1Another').checked === true) {
-		selectedApplicantGenderButton = 'ApplicantAnother'
-		ApplicantGenderFields.select(selectedApplicantGenderButton)
+		selectedApplicantGenderButton = 'ApplicantAnother';
+		ApplicantGenderFields.select(selectedApplicantGenderButton);
 	}
-
 	if (document.getElementById('Applicant1NotAvailable').checked === true) {
-		selectedApplicantGenderButton = 'ApplicantNotAvailable'
-		ApplicantGenderFields.select(selectedApplicantGenderButton)
+		selectedApplicantGenderButton = 'ApplicantNotAvailable';
+		ApplicantGenderFields.select(selectedApplicantGenderButton);
 	}
-
-	//Applicant Text Fields
-	ApplicantSurnameField.setText(document.getElementById('Applicant1Surname').value)
-	ApplicantGivenNameField.setText(document.getElementById('Applicant1GivenNames').value)
-	
+	ApplicantSurnameField.setText(document.getElementById('Applicant1Surname').value);
+	ApplicantGivenNameField.setText(document.getElementById('Applicant1GivenNames').value);
 	if (Applicant1DateBirth != "") {
-		var dateOfBirth1Array = document.getElementById('Applicant1DateBirth').value.split("-")
-		ApplicantDateOfBirthYearField.setText(dateOfBirth1Array[0])
-		ApplicantDateOfBirthMonthField.setText(dateOfBirth1Array[1])
-		ApplicantDateOfBirthDayField.setText(dateOfBirth1Array[2])
+		var dateOfBirth1Array = document.getElementById('Applicant1DateBirth').value.split("-");
+		ApplicantDateOfBirthYearField.setText(dateOfBirth1Array[0]);
+		ApplicantDateOfBirthMonthField.setText(dateOfBirth1Array[1]);
+		ApplicantDateOfBirthDayField.setText(dateOfBirth1Array[2]);
 	}
-	
-
-	//Radio group 4
-	var selectedRespondentChoiceButton = new String()
+	var selectedRespondentChoiceButton = new String();
 	if (document.getElementById('Respondent2').checked === true) {
-		selectedRespondentChoiceButton = 'Respondent'
-		RespondentChoiceFields.select(selectedRespondentChoiceButton)
+		selectedRespondentChoiceButton = 'Respondent';
+		RespondentChoiceFields.select(selectedRespondentChoiceButton);
 	}
 	if (document.getElementById('JointApplicant2').checked === true) {
-		selectedRespondentChoiceButton = 'RespondentJointApplicant'
-		RespondentChoiceFields.select(selectedRespondentChoiceButton)
+		selectedRespondentChoiceButton = 'RespondentJointApplicant';
+		RespondentChoiceFields.select(selectedRespondentChoiceButton);
 	}
-
-	//const RespondentChoiceFields = form.getRadioGroup('RespondentChoice')
-	//Radio group 5
-	var selectedRespondentGenderButton = new String()
+	var selectedRespondentGenderButton = new String();
 	if (document.getElementById('Applicant2Male').checked === true) {
-		selectedRespondentGenderButton = 'RespondentMale'
-		RespondentGenderFields.select(selectedRespondentGenderButton)
+		selectedRespondentGenderButton = 'RespondentMale';
+		RespondentGenderFields.select(selectedRespondentGenderButton);
 	}
 	if (document.getElementById('Applicant2Female').checked === true) {
-		selectedRespondentGenderButton = 'RespondentFemale'
-		RespondentGenderFields.select(selectedRespondentGenderButton)
+		selectedRespondentGenderButton = 'RespondentFemale';
+		RespondentGenderFields.select(selectedRespondentGenderButton);
 	}
 	if (document.getElementById('Applicant2Another').checked === true) {
-		selectedApplicantGenderButton = 'RespondentAnother'
-		RespondentGenderFields.select(selectedApplicantGenderButton)
+		selectedApplicantGenderButton = 'RespondentAnother';
+		RespondentGenderFields.select(selectedApplicantGenderButton);
 	}
 	if (document.getElementById('Applicant2NotAvailable').checked === true) {
-		selectedApplicantGenderButton = 'RespondentNotAvailable'
-		RespondentGenderFields.select(selectedApplicantGenderButton)
+		selectedApplicantGenderButton = 'RespondentNotAvailable';
+		RespondentGenderFields.select(selectedApplicantGenderButton);
 	}
-
-	//const RespondentGenderFields = form.getRadioGroup('RespondentGender')
-	//Respondent Text Fields
-	RespondentSurnameField.setText(document.getElementById('Applicant2Surname').value)
-	RespondentGivenNameField.setText(document.getElementById('Applicant2GivenNames').value)
-	
+	RespondentSurnameField.setText(document.getElementById('Applicant2Surname').value);
+	RespondentGivenNameField.setText(document.getElementById('Applicant2GivenNames').value);
 	if (Applicant2DateBirth != "") {
-		var dateOfBirth2Array = document.getElementById('Applicant2DateBirth').value.split("-")
-		RespondentDateOfBirthYearField.setText(dateOfBirth2Array[0])
-		RespondentDateOfBirthMonthField.setText(dateOfBirth2Array[1])
-		RespondentDateOfBirthDayField.setText(dateOfBirth2Array[2])
+		var dateOfBirth2Array = document.getElementById('Applicant2DateBirth').value.split("-");
+		RespondentDateOfBirthYearField.setText(dateOfBirth2Array[0]);
+		RespondentDateOfBirthMonthField.setText(dateOfBirth2Array[1]);
+		RespondentDateOfBirthDayField.setText(dateOfBirth2Array[2]);
 	}
+	DateSignedField.setText(document.getElementById('DateSigned').value);
 
-	//Date Signed
-	DateSignedField.setText(document.getElementById('DateSigned').value)
-
-
-	//Flatten Form
-	form.flatten();
+    form.flatten();
 	const pdfBytes = await pdfDoc.save()
 
-	// Trigger the browser to download the PDF document
-	download(pdfBytes, "pdf-lib_form_creation_example.pdf", "application/pdf");
+    if (document.documentElement.lang == 'en') {
+        download(pdfBytes, "form-eng.pdf", "application/pdf");
+	} else if (document.documentElement.lang == 'fr') {
+        download(pdfBytes, "form-fra.pdf", "application/pdf");
+	}
 }
 
 async function fillRegistrationPDF() {
