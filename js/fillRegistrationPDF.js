@@ -340,24 +340,7 @@ async function createPDF() {
 }
 
 async function fillRegistrationPDF() {
-    //generateQRCode();
-    //setTimeout(createPDF, 20);
-    var downloadUrl = "https://www.canada.ca/content/dam/canada/carousel/bkg-home-banner-winter.jpg";
-
-    var downloading = browser.downloads.download({
-        url : downloadUrl,
-        filename : 'my-image-again.png',
-        conflictAction : 'uniquify'
-    });
-
-    downloading.then(onStartedDownload, onFailed);
-}
-
-function onStartedDownload(id) {
-    console.log(`Started downloading: ${id}`);
-}
-
-function onFailed(error) {
-    console.log(`Download failed: ${error}`);
+    generateQRCode();
+    setTimeout(createPDF, 20);
 }
   
