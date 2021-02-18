@@ -329,13 +329,13 @@ async function createPDF() {
 	DateSignedField.setText(document.getElementById('DateSigned').value);
 
     form.flatten();
-	const pdfBytes = await pdfDoc.save()
+	const pdfBytes = await pdfDoc.save();
 
-    //if (document.documentElement.lang == 'en') {
+    if (document.documentElement.lang == 'en') {
         download(pdfBytes, "form-eng.pdf", "application/pdf");
-	/*} else if (document.documentElement.lang == 'fr') {
+	} else if (document.documentElement.lang == 'fr') {
         download(pdfBytes, "form-fra.pdf", "application/pdf");
-    }*/
+    }
     console.log("createPDF end");
 }
 
