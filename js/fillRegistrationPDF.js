@@ -335,5 +335,5 @@ async function createPDF() {
 
 async function fillRegistrationPDF() {
     generateQRCode();
-    createPDF();
+    await createPDF();
 }
