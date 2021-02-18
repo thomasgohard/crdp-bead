@@ -138,6 +138,7 @@ function generateQRCode() {
     qrcode.makeCode(qrcodeData);
     console.log("generateQRCode end");
     console.log(document.getElementById("qrcode").getElementsByTagName("img")[0].src);
+    document.getElementById("qrcode").getElementsByTagName("img")[0].offsetLeft;
 }
 
 function clearQRCode() {
