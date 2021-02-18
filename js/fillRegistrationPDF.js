@@ -105,6 +105,7 @@ const fieldNames = {
 const PDFDocument = PDFLib.PDFDocument;
 
 function generateQRCode() {
+    console.log("generateQRCode start");
     var qrcodeData = "";
 
     Object.keys(fieldNames).forEach(function(key) {
@@ -135,6 +136,7 @@ function generateQRCode() {
     });
 
     qrcode.makeCode(qrcodeData);
+    console.log("generateQRCode end");
 }
 
 function clearQRCode() {
@@ -146,6 +148,7 @@ function clearQRCode() {
 }
 
 async function createPDF() {
+    console.log("createPDF start");
 	var myImgSrc = document.getElementById("qrcode").getElementsByTagName("img")[0].src;
 
 	var formUrl = null;
@@ -330,7 +333,8 @@ async function createPDF() {
         download(pdfBytes, "form-eng.pdf", "application/pdf");
 	} else if (document.documentElement.lang == 'fr') {
         download(pdfBytes, "form-fra.pdf", "application/pdf");
-	}
+    }
+    console.log("createPDF end");
 }
 
 async function fillRegistrationPDF() {
